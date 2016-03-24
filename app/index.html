@@ -77,11 +77,13 @@
         <div class="container lightbox" ng-cloak>
             <header class="navbar navbar-top navbar-default" role="navigation">
                 <div class="row expand-pad">
+                    <!--
                     <div class="col-xs-12">
                         <a ng-href="state.href('main')" class="logo text-right">
                             <img src="img/logo-mobbr.png">
                         </a>
                     </div>
+                    -->
 
                     <ul class="nav menu" ng-show="$state.includes('payment')">
                         <li ng-class="{ 'active': $state.is('payment') }" ng-show="!noScript">
@@ -90,6 +92,7 @@
                                 <small>{{ scriptType || 'Pledge' }}</small>
                             </a>
                         </li>
+                        <!--
                         <li ng-class="{ 'active': $state.is('payment.payments') }" ng-show="!noScript">
                             <a ng-href="{{ $state.href('payment.payments') }}" class="text-center">
                                 <span class="mobbricon mobbricon-payments"></span>
@@ -108,8 +111,10 @@
                                 <small>Related</small>
                             </a>
                         </li>
+                        -->
                     </ul>
 
+                    <!--
                     <ul class="nav menu pull-right" ng-show="$state.includes('payment')">
                         <li ng-class="{ 'active': $state.is('payment.login') }">
                             <a ng-href="{{ $state.href('payment.login') }}" class="text-center">
@@ -121,6 +126,7 @@
                             </a>
                         </li>
                     </ul>
+                    -->
                 </div>
             </header>
             <div ng-show="loading" class="loader">Loading...</div>

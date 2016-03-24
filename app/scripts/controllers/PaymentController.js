@@ -10,9 +10,16 @@ angular.module('mobbr-lightbox.controllers')
         $scope.taskUrl = $state.params.hash;
         $scope.task = task;
         $rootScope.scriptType = task.result.script.type;
+        $scope.currentPaymentStep = 'recipients';
+        $scope.paymentSteps = {
+            recipients: {previous: null, next: 'amount'},
+            amount: {previous: 'recipients', next: 'final'},
+            final: {previous: 'amount', next: null}
+        };
 
         var lightbox_meta = parent.document.querySelector("meta[name='lightbox']");
         var lightbox_meta_content = lightbox_meta && lightbox_meta.getAttribute('content') || null;
+        lightbox_meta_content = '{"editable":true,"task_url":"","amount":350,"currency":"USD","ajax_url":"http:\/\/tunga.io\/wordpress\/wp-admin\/admin-ajax.php"}';
         $scope.task_metadata = (lightbox_meta_content)?angular.fromJson(lightbox_meta_content):{};
 
         $scope.pay_currencies = ['USD', 'EUR'];
@@ -114,13 +121,12 @@ angular.module('mobbr-lightbox.controllers')
                 keywords: task.result.script.keywords || [],
                 participants: $scope.allRecipients || []
             };
-            $scope.showAddRecipients = true;
         };
 
         //Should have at least 2 recipients, site owner and at least one contributor
-        if($scope.allRecipients.length < 2 && $scope.task_metadata.editable && $scope.task_metadata.ajax_url) {
-            $scope.showAddRecipientsBox();
-        }
+        //if($scope.allRecipients.length < 2 && $scope.task_metadata.editable && $scope.task_metadata.ajax_url) {
+        $scope.showAddRecipientsBox();
+        //}
         $scope.addRecipient = function(id, share) {
             var error = {message: {text: "Enter valid email address"}, status: [0]};
 
@@ -211,7 +217,7 @@ angular.module('mobbr-lightbox.controllers')
                 jQueryLikeParamSerializer({url: $scope.url, participants: $scope.allRecipients}),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
                 .then(function(response) {
-                    $scope.showAddRecipients = false;
+                    goToStep(true);
                     $rootScope.script.participants = $scope.allRecipients;
 
                     if($scope.amount > 0) {
@@ -219,6 +225,37 @@ angular.module('mobbr-lightbox.controllers')
                     }
                 }, function(response) {
                     console.log(response);
+                    goToStep(true);
+                    $rootScope.script.participants = $scope.allRecipients;
+
+                    if($scope.amount > 0) {
+                        $scope.preview(true);
+                    }
                 });
+        };
+
+        function goToStep(forward) {
+            var currentStep = $scope.paymentSteps[$scope.currentPaymentStep];
+            if(forward) {
+                if(currentStep.next) {
+                    $scope.currentPaymentStep = currentStep.next;
+                }
+            } else {
+                if(currentStep.previous) {
+                    $scope.currentPaymentStep = currentStep.previous;
+                }
+            }
+        }
+
+        $scope.nextPaymentStep = function() {
+            if($scope == 'recipients') {
+                $scope.closeAddRecipientsBox();
+            } else {
+                goToStep(true);
+            }
+        };
+
+        $scope.previousPaymentStep = function() {
+            goToStep(false);
         };
     });

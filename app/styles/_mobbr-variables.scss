@@ -17,7 +17,7 @@ $input-border-radius:                     0;
 $gray:                                    #edebeb;
 $input-bg:                                $gray;
 
-$mobbrblue:                               rgb(0, 158, 224);
+$mobbrblue:                               #F41152;
 $brand-primary:                           $mobbrblue;
 $state-warning-bg:                        #f60;
 $state-warning-text:                      #ff0;
@@ -25,6 +25,7 @@ $white:                                   #fff;
 $btn-success-bg:                          #690;
 $btn-danger-bg:                           $state-warning-bg;
 $btn-primary-bg:                          $mobbrblue;
+$btn-mobbr-bg:                            #009ee0;
 
 $navbar-height:                           117px;
 $navbar-default-bg:                       $darkgray;
@@ -46,10 +47,10 @@ $nav-pills-active-link-hover-bg:          $mobbrblue;
 $nav-pills-active-link-hover-border-color:$mobbrblue;
 
 $mobbryellow:                             #ff9900;
-$mobbrgreen:                              #699900;
+$mobbrgreen:                              #009ee0;
 $mobbrcallout:                            #ffcc00;
-$mobbrlightblue:                          #2fb3e7;
-$mobbrlightgreen:                         #8eb348;
+$mobbrlightblue:                          lighten($mobbrblue, 20);;
+$mobbrlightgreen:                         #2fb3e7;
 $mobbrlightyellow:                        #ffb348;
 
 $btn-danger-bg:                           $state-warning-bg;
